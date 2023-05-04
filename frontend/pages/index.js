@@ -42,7 +42,6 @@ const phonebookList = () => {
 
   const resetFlag = () => {
     setIsSubmitted(false);
-    setIsLoading(true);
     setIsDeleted(false);
     setErrorMsg("");
     setIsAdded(false);
@@ -62,6 +61,8 @@ const phonebookList = () => {
 
   useEffect(() => {
     const getPhoneBookList = async () => {
+      setIsLoading(true);
+
       try {
         let data = await new makeApiCall().get("phonebook");
         console.log(data, "phone books");
@@ -69,12 +70,13 @@ const phonebookList = () => {
         setIsLoading(false);
       } catch (err) {
         handleError();
+        setIsLoading(false);
       }
     };
     getPhoneBookList();
   }, [isSubmitted]);
 
-  console.log(phonebooks, "phonr list");
+  console.log(isLoading, "isLoading list");
 
   const toggle = useCallback(() => {
     setModal(!modal);
@@ -97,6 +99,7 @@ const phonebookList = () => {
 
     onSubmit: async (values) => {
       resetFlag();
+      setIsLoading(true);
 
       if (isUpdate) {
         try {
@@ -112,8 +115,10 @@ const phonebookList = () => {
 
           console.log(data, "UPDTATE");
           validation.resetForm();
+          setIsLoading(false);
         } catch (err) {
           handleError(err);
+          setIsLoading(false);
         }
       } else {
         try {
@@ -126,8 +131,10 @@ const phonebookList = () => {
           setIsAdded(true);
           toggle();
           validation.resetForm();
+          setIsLoading(false);
         } catch (err) {
           handleError(err);
+          setIsLoading(false);
         }
       }
     },
@@ -160,8 +167,6 @@ const phonebookList = () => {
     setDeleteModal(false);
     setIsLoading(false);
     setIsDeleted(true);
-
-    console.log(data, "DELELTED >>>>>>");
   };
 
   const onClickDelete = (p) => {
@@ -179,8 +184,6 @@ const phonebookList = () => {
     });
     setPhoneBookList(data.phonebook);
     setIsLoading(false);
-
-    console.log(data, "SEARCHED DATA");
   };
   const handler = useCallback(
     debounce((term) => {
@@ -192,7 +195,6 @@ const phonebookList = () => {
 
   const handleSearch = (e) => {
     let term = e.target.value;
-    console.log(term, "CHANGONF");
     handler(term);
   };
 
@@ -215,6 +217,7 @@ const phonebookList = () => {
           show={deleteModal}
           onDeleteClick={handleDelete}
           onCloseClick={() => setDeleteModal(false)}
+          isLoading={isLoading}
         />
 
         <Container fluid>
