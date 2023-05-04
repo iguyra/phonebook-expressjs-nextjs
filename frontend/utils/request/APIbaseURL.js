@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === "production") {
 
 function urlChoice(choice) {
   if (choice === "prod") {
-    return "https://api.beelydrop.com/api";
+    return "https://phonebookbackend-nine.vercel.app/api";
   }
 
   if (choice === "dev") {

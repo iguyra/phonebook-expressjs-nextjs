@@ -34,7 +34,7 @@ let helmetOptions = {
 let corsOption = {
   credentials: true,
 
-  origin: ["http://127.0.0.1:3000"],
+  origin: ["http://127.0.0.1:3000", "https://phonebook-navy.vercel.app"],
   methods: ["GET", "PUT", "POST", "DELETE", "PATCH", "OPTIONS"], // to works well with web app, OPTIONS is required
 };
 app.use(cors(corsOption));
