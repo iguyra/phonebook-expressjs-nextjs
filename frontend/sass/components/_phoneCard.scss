@@ -1,0 +1,46 @@
+ 
+.phoneList { 
+    &__list {
+        width: 96%;
+        margin: 0 auto;
+
+    
+    }
+
+    &__item {
+        // background-color: rgb(201, 160, 160);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3rem;
+        border-bottom: 1px solid #ccc;
+       
+    }
+
+    &__details{
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    &__phoneIcon{
+        display: flex;  
+        align-items: center;
+        gap: .5rem;
+        font-size: 1.4rem;
+        opacity: .4;
+
+        img{
+            width: 1.6rem;
+         }
+ 
+    }
+
+    &__name {
+        font-size: 1.6rem;
+    }
+
+ 
+}
+
+

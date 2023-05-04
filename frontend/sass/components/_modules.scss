@@ -1,0 +1,73 @@
+.actions {
+
+    ul {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    li{
+        cursor: pointer;
+    }
+
+    }
+
+
+
+    span {
+        color: green;
+    }
+  
+
+    &__img{
+        background-color: rgb(169, 72, 72);
+        padding: .5rem;
+        display: flex;
+        justify-content: center;
+        border-radius: .5rem;
+
+ 
+        img{
+            width: 60%;
+            
+        }
+       
+    }
+}
+
+.container{
+    max-width: 70rem !important;
+    padding-top: 15%;
+
+
+@media only screen and (min-width: 768px) {
+    padding-top: 10% !important
+    }
+}
+
+
+.header{
+
+    text-align: center;
+    font-size: 4rem;
+    padding: 1rem 0;
+    font-weight: 800;
+}
+
+.tab {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+ 
+       
+}
+
+
+.loader {
+
+    text-align: center;
+}
+
+
+
