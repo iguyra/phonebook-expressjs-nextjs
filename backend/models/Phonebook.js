@@ -5,14 +5,17 @@ const phonebookSchema = new mongoose.Schema({
   firstName: {
     type: String,
     lowercase: true,
+    minlength: 15,
   },
   lastName: {
     type: String,
     lowercase: true,
+    minlength: 15,
   },
 
   phoneNumber: {
     type: Number,
+    minlength: 13,
   },
 });
 

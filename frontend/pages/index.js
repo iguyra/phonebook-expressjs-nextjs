@@ -17,7 +17,6 @@ import {
   FormFeedback,
 } from "reactstrap";
 
-import BreadCrumb from "../Components/BreadCrumb";
 import MsgToast from "../Components/MsgToast";
 import MsgToastError from "../Components/MsgToastError";
 
@@ -76,8 +75,6 @@ const phonebookList = () => {
     getPhoneBookList();
   }, [isSubmitted]);
 
-  console.log(isLoading, "isLoading list");
-
   const toggle = useCallback(() => {
     setModal(!modal);
   }, [modal]);
@@ -92,9 +89,16 @@ const phonebookList = () => {
     },
 
     validationSchema: Yup.object({
-      firstName: Yup.string().required("Please Enter A First name"),
-      lastName: Yup.string().required("Please last name"),
-      phoneNumber: Yup.string().required("Please Enter phone number"),
+      firstName: Yup.string()
+        .required("Please Enter A First name")
+        .max(15, "Maximum length is 15 characters"),
+      lastName: Yup.string()
+        .required("Please last name")
+        .max(15, "Maximum length is 15 characters"),
+
+      phoneNumber: Yup.string()
+        .required("Please Enter phone number")
+        .max(15, "Maximum length is 15 characters"),
     }),
 
     onSubmit: async (values) => {
@@ -113,7 +117,6 @@ const phonebookList = () => {
           setIsUpdated(true);
           toggle();
 
-          console.log(data, "UPDTATE");
           validation.resetForm();
           setIsLoading(false);
         } catch (err) {
@@ -140,10 +143,7 @@ const phonebookList = () => {
     },
   });
 
-  console.log(validation.errors);
-
   const handleEdit = (p) => {
-    console.log(p, "EIDT BOOK");
     setIsUpdate(true);
     setPhoneBook(p);
     toggle();
@@ -202,7 +202,6 @@ const phonebookList = () => {
     let { response } = (err && err) || {};
     let { data } = (response && response) || {};
     let { message } = (data && data) || {};
-    console.log(message, err, "ADD ERROR");
     setIsLoading(false);
     setIsSubmitted(false);
     setIsError(true);
