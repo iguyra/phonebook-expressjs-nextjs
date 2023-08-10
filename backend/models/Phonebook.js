@@ -4,18 +4,18 @@ const phonebookSchema = new mongoose.Schema({
   createdAt: { type: Date, default: new Date().toLocaleString() },
   firstName: {
     type: String,
-    lowercase: true,
     minlength: 15,
+    required: [true, "please provide your first name"],
   },
   lastName: {
     type: String,
-    lowercase: true,
     minlength: 15,
   },
 
   phoneNumber: {
     type: Number,
-    minlength: 13,
+    minlength: 15,
+    required: [true, "please provide your email"],
   },
 });
 

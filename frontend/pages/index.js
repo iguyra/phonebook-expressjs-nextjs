@@ -98,7 +98,7 @@ const phonebookList = () => {
 
       phoneNumber: Yup.string()
         .required("Please Enter phone number")
-        .max(15, "Maximum length is 15 characters"),
+        .max(15, "Maximum length is 15 numbers"),
     }),
 
     onSubmit: async (values) => {
