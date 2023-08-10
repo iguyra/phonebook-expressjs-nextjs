@@ -5,8 +5,8 @@ const catchAsync = require("../utils/catchAsync");
 exports.createPhonebook = catchAsync(async (req, res, next) => {
   let { firstName, lastName, phoneNumber } = req.body;
 
-  if (!firstName || !lastName || !phoneNumber) {
-    return next(new AppError("error", 400));
+  if (!firstName || !phoneNumber) {
+    return next(new AppError("missed some required fields", 400));
   }
 
   let phonebook = await Phonebook.findOne({

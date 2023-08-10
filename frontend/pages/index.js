@@ -64,7 +64,6 @@ const phonebookList = () => {
 
       try {
         let data = await new makeApiCall().get("phonebook");
-        console.log(data, "phone books");
         setPhoneBookList(data.phonebooks);
         setIsLoading(false);
       } catch (err) {
@@ -93,7 +92,7 @@ const phonebookList = () => {
         .required("Please Enter A First name")
         .max(15, "Maximum length is 15 characters"),
       lastName: Yup.string()
-        .required("Please last name")
+        .notRequired("Please last name")
         .max(15, "Maximum length is 15 characters"),
 
       phoneNumber: Yup.string()
