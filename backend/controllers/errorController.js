@@ -18,7 +18,6 @@ const handleValidationErrorDB = (err) => {
 };
 
 const sendErrorDev = (err, res) => {
-  console.log(err, " error from global handler");
   res.status(err.statusCode).json({
     status: err.status,
     error: err,
@@ -29,7 +28,6 @@ const sendErrorDev = (err, res) => {
 
 const sendErrorProd = (err, res) => {
   // operational, trsuted error: send message to client
-  console.log(err, " error prod from global handler");
 
   if (err.isOperational) {
     res.status(err.statusCode).json({

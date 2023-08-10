@@ -40,6 +40,14 @@ exports.updatePhonebook = catchAsync(async (req, res, next) => {
     new: true,
   });
 
+  const numberExist = await Phonebook.findOne({
+    phoneNumber: req.body.phoneNumber,
+  });
+
+  if (numberExist) {
+    return next(new AppError("this number already exist", 400));
+  }
+
   res.status(200).send({ success: true, phonebook });
 });
 
@@ -55,17 +63,20 @@ exports.deletePhonebook = catchAsync(async (req, res, next) => {
   res.status(200).send({ success: true, phonebook });
 });
 
-exports.searchPhonebooks = catchAsync(async (req, res, next) => {
+exports.searchPhonebooks = catchAsync(async (req, res) => {
   let { term } = req.query;
 
-  let phonebook;
+  let searchQuery = {};
   if (term) {
-    phonebook = await Phonebook.find({
-      $or: [{ firstName: term }, { lastName: term }],
-    });
-  } else {
-    phonebook = await Phonebook.find();
+    searchQuery = {
+      $or: [
+        { firstName: { $regex: term, $options: "i" } },
+        { lastName: { $regex: term, $options: "i" } },
+      ],
+    };
   }
+
+  let phonebook = await Phonebook.find(searchQuery);
 
   res.status(200).send({ success: true, phonebook });
 });
