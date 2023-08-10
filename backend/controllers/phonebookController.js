@@ -36,17 +36,19 @@ exports.updatePhonebook = catchAsync(async (req, res, next) => {
     return next(new AppError("this item does not exist", 400));
   }
 
-  phonebook = await Phonebook.findByIdAndUpdate(req.body._id, req.body, {
-    new: true,
-  });
-
   const numberExist = await Phonebook.findOne({
     phoneNumber: req.body.phoneNumber,
   });
 
+  console.log(numberExist, "numxx");
+
   if (numberExist) {
     return next(new AppError("this number already exist", 400));
   }
+
+  phonebook = await Phonebook.findByIdAndUpdate(req.body._id, req.body, {
+    new: true,
+  });
 
   res.status(200).send({ success: true, phonebook });
 });
