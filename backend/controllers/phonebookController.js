@@ -76,6 +76,15 @@ exports.searchPhonebooks = catchAsync(async (req, res) => {
         { lastName: { $regex: term, $options: "i" } },
       ],
     };
+
+    if (/\s/.test(term)) {
+      term = term.split(" ");
+
+      searchQuery = {
+        firstName: { $regex: term[0], $options: "i" },
+        lastName: { $regex: term[1], $options: "i" },
+      };
+    }
   }
 
   let phonebook = await Phonebook.find(searchQuery);

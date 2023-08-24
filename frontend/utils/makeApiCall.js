@@ -3,13 +3,12 @@ import APIbaseURL from "./request/APIbaseURL";
 
 let apiUrl = process.env.API_URL;
 
+// todo: update to use axios base url instead
 class makeApiCall {
   constructor() {}
 
   async post(urlPath, object) {
-    console.log(object, "OBJECT");
     const { data } = await axios.post(`${APIbaseURL}/${urlPath}`, object);
-    console.log(data, "RES DATAA");
     return data;
   }
 
