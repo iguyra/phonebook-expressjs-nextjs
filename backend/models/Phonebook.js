@@ -13,7 +13,7 @@ const phonebookSchema = new mongoose.Schema({
   },
 
   phoneNumber: {
-    type: Number,
+    type: String,
     maxlength: 15,
     required: [true, "please provide your email"],
   },

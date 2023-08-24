@@ -208,6 +208,21 @@ const phonebookList = () => {
     setErrorMsg(message || "a server error occured");
   }
 
+  const handleOnchange = (e, type = "text") => {
+    let value = e.target.value;
+    let name = e.target.name;
+
+    let regex = /[^a-zA-Z]/;
+
+    if (type === "number") {
+      regex = /[^0-9]/;
+    }
+
+    if (!regex.test(value)) {
+      validation.setFieldValue(name, value);
+    }
+  };
+
   return (
     <React.Fragment>
       <div className="container">
@@ -360,7 +375,7 @@ const phonebookList = () => {
                                 className="form-control"
                                 placeholder="Enter first name"
                                 type="text"
-                                onChange={validation.handleChange}
+                                onChange={handleOnchange}
                                 onBlur={validation.handleBlur}
                                 value={validation.values.firstName || ""}
                                 invalid={
@@ -393,7 +408,7 @@ const phonebookList = () => {
                                 className="form-control"
                                 placeholder="Enter last name"
                                 type="text"
-                                onChange={validation.handleChange}
+                                onChange={handleOnchange}
                                 onBlur={validation.handleBlur}
                                 value={validation.values.lastName || ""}
                                 invalid={
@@ -425,12 +440,12 @@ const phonebookList = () => {
                                 id="phoneNumber-field"
                                 className="form-control"
                                 placeholder="Enter phone number"
-                                type="number"
+                                type="text"
                                 rows="3"
                                 validate={{
                                   required: { value: true },
                                 }}
-                                onChange={validation.handleChange}
+                                onChange={(e) => handleOnchange(e, "number")}
                                 onBlur={validation.handleBlur}
                                 value={validation.values.phoneNumber || ""}
                                 invalid={
