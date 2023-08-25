@@ -41,6 +41,7 @@ const phonebookList = () => {
 
   const resetFlag = () => {
     setIsSubmitted(false);
+    setIsError(false);
     setIsDeleted(false);
     setErrorMsg("");
     setIsAdded(false);
@@ -82,9 +83,9 @@ const phonebookList = () => {
     enableReinitialize: true,
 
     initialValues: {
-      firstName: (phonebook && phonebook.firstName) || "",
-      lastName: (phonebook && phonebook.lastName) || "",
-      phoneNumber: (phonebook && phonebook.phoneNumber) || "",
+      firstName: phonebook?.firstName || "",
+      lastName: phonebook?.lastName || "",
+      phoneNumber: phonebook?.phoneNumber || "",
     },
 
     validationSchema: Yup.object({
@@ -188,7 +189,7 @@ const phonebookList = () => {
     debounce((term) => {
       if (term) search(term);
       else search();
-    }, 1000),
+    }, 500),
     []
   );
 
@@ -198,9 +199,8 @@ const phonebookList = () => {
   };
 
   function handleError(err) {
-    let { response } = (err && err) || {};
-    let { data } = (response && response) || {};
-    let { message } = (data && data) || {};
+    let { message } = err?.response?.data || {};
+
     setIsLoading(false);
     setIsSubmitted(false);
     setIsError(true);
@@ -262,13 +262,13 @@ const phonebookList = () => {
               <Card>
                 <CardHeader>
                   <Row className="g-3">
-                    <Col md={4}>
+                    <Col md={5}>
                       <div className="search-box">
                         <Input
                           type="text"
                           className="form-control search"
-                          placeholder="Search for contact by last name or first name..."
-                          onChange={(e) => handleSearch(e)}
+                          placeholder="Search for contact by first, last or full name"
+                          onChange={handleSearch}
                         />
                         <i className="ri-search-line search-icon"></i>
                       </div>
@@ -467,16 +467,18 @@ const phonebookList = () => {
                       </ModalBody>
                       <ModalFooter>
                         <div className="hstack gap-2 justify-content-end">
-                          <button
-                            type="button"
-                            className="btn btn-light"
-                            onClick={() => {
-                              setModal(false);
-                            }}
-                          >
-                            {" "}
-                            Close{" "}
-                          </button>
+                          {!isUpdate ? (
+                            <button
+                              type="button"
+                              className="btn btn-light"
+                              onClick={() => {
+                                validation.resetForm();
+                              }}
+                            >
+                              Clear
+                            </button>
+                          ) : null}
+
                           <button
                             type="submit"
                             className="btn btn-success"

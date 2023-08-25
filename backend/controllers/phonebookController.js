@@ -40,9 +40,8 @@ exports.updatePhonebook = catchAsync(async (req, res, next) => {
     phoneNumber: req.body.phoneNumber,
   });
 
-  console.log(numberExist, "numxx");
-
-  if (numberExist) {
+  // if the number exist and not the same as the one being updated
+  if (numberExist && phonebook.id !== numberExist.id) {
     return next(new AppError("this number already exist", 400));
   }
 
