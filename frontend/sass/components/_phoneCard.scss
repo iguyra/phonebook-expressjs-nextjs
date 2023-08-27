@@ -1,5 +1,17 @@
- 
+
+.phoneList__container{
+    height: 40rem;
+
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+
+}
+
 .phoneList { 
+  
+
+
+
     &__list {
         width: 96%;
         margin: 0 auto;

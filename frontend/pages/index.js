@@ -330,46 +330,7 @@ const phonebookList = () => {
                 ) : null}
 
                 <CardBody>
-                  {/* {phonebooks.length
-                    ? phonebooks.map((p, i) => {
-                        return (
-                          <div key={i} className="phoneList">
-                            <div className="phoneList__list">
-                              <div className="phoneList__item">
-                                <div className="phoneList__details">
-                                  <p className="phoneList__name">
-                                    {p.firstName} {p.lastName}
-                                  </p>
-
-                                  <div className="phoneList__phoneIcon">
-                                    <img src="/static/phone.png" alt="" />{" "}
-                                    <p> {p.phoneNumber}</p>
-                                  </div>
-                                </div>
-                                <div className="actions">
-                                  <ul>
-                                    <li>
-                                      <span onClick={() => handleEdit(p)}>
-                                        edit
-                                      </span>
-                                    </li>
-                                    <li>
-                                      <div
-                                        className="actions__img"
-                                        onClick={() => onClickDelete(p)}
-                                      >
-                                        <img src="/static/delete.png" alt="" />
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })
-                    : ""} */}
-
+                  {/* <div className="phoneList__container"> */}
                   {phonebooks && phonebooks.length ? (
                     <InfiniteScroll
                       dataLength={phonebooks && phonebooks.length}
@@ -420,6 +381,7 @@ const phonebookList = () => {
                         : null}
                     </InfiniteScroll>
                   ) : null}
+                  {/* </div> */}
 
                   {isLoading ? (
                     <div className="lds-ripple">

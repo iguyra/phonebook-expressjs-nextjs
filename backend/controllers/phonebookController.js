@@ -29,7 +29,7 @@ exports.getPhonebooks = catchAsync(async (req, res, next) => {
   let phonebooks = await Phonebook.find()
     .sort({ createdAt: -1 })
     .skip(skip)
-    .limit(5);
+    .limit(8);
   let totalCount = await Phonebook.find().countDocuments();
 
   res.status(200).send({ success: true, phonebooks, totalCount });
@@ -94,7 +94,7 @@ exports.searchPhonebooks = catchAsync(async (req, res) => {
     }
   }
 
-  let phonebook = await Phonebook.find(searchQuery);
+  let phonebook = await Phonebook.find(searchQuery).sort({ createdAt: -1 });
 
   res.status(200).send({ success: true, phonebook });
 });
