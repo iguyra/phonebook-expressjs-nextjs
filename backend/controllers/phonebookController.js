@@ -24,9 +24,15 @@ exports.createPhonebook = catchAsync(async (req, res, next) => {
 });
 
 exports.getPhonebooks = catchAsync(async (req, res, next) => {
-  let phonebooks = await Phonebook.find();
+  let skip = +req.query.skip;
 
-  res.status(200).send({ success: true, phonebooks });
+  let phonebooks = await Phonebook.find()
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(5);
+  let totalCount = await Phonebook.find().countDocuments();
+
+  res.status(200).send({ success: true, phonebooks, totalCount });
 });
 
 exports.updatePhonebook = catchAsync(async (req, res, next) => {
@@ -65,7 +71,8 @@ exports.deletePhonebook = catchAsync(async (req, res, next) => {
 });
 
 exports.searchPhonebooks = catchAsync(async (req, res) => {
-  let { term } = req.query;
+  let query = req.query;
+  let term = query.params?.term;
 
   let searchQuery = {};
   if (term) {
@@ -76,6 +83,7 @@ exports.searchPhonebooks = catchAsync(async (req, res) => {
       ],
     };
 
+    // text if term has space
     if (/\s/.test(term)) {
       term = term.split(" ");
 

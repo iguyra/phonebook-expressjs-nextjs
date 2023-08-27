@@ -16,7 +16,7 @@ import {
   ModalFooter,
   FormFeedback,
 } from "reactstrap";
-
+import InfiniteScroll from "react-infinite-scroll-component";
 import MsgToast from "../Components/MsgToast";
 import MsgToastError from "../Components/MsgToastError";
 
@@ -26,6 +26,25 @@ import DeleteModal from "../Components/DeleteModal";
 import makeApiCall from "../utils/makeApiCall";
 import { debounce } from "lodash";
 
+export const handleScroll = async (productState) => {
+  try {
+    productState.setIsLoading(true);
+    let skip = productState.phonebooks.length;
+
+    let data = await new makeApiCall().get("phonebook", { skip });
+
+    const products = data.phonebooks;
+
+    productState.setIsLoading(false);
+
+    productState.setPhoneBookList((p) => [...p, ...products]);
+
+    setFetchingNew(false);
+  } catch (err) {
+    productState.setIsLoading(false);
+  }
+};
+
 const phonebookList = () => {
   const [isUpdate, setIsUpdate] = useState(false);
   const [phonebooks, setPhoneBookList] = useState([]);
@@ -34,10 +53,16 @@ const phonebookList = () => {
   const [isDeleted, setIsDeleted] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [isUpdated, setIsUpdated] = useState(false);
+  const [totalPhonebooks, setTotalPhonebooks] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [IsError, setIsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState(false);
+  let productState = {
+    phonebooks,
+    setIsLoading,
+    setPhoneBookList,
+  };
 
   const resetFlag = () => {
     setIsSubmitted(false);
@@ -66,6 +91,7 @@ const phonebookList = () => {
       try {
         let data = await new makeApiCall().get("phonebook");
         setPhoneBookList(data.phonebooks);
+        setTotalPhonebooks(data.totalCount);
         setIsLoading(false);
       } catch (err) {
         handleError();
@@ -119,26 +145,29 @@ const phonebookList = () => {
 
           validation.resetForm();
           setIsLoading(false);
+          return;
         } catch (err) {
           handleError(err);
           setIsLoading(false);
-        }
-      } else {
-        try {
-          let data = await new makeApiCall().post("phonebook", values);
 
-          setPhoneBookList([...phonebooks, data.phonebook]);
-
-          setIsLoading(false);
-          setIsSubmitted(true);
-          setIsAdded(true);
-          toggle();
-          validation.resetForm();
-          setIsLoading(false);
-        } catch (err) {
-          handleError(err);
-          setIsLoading(false);
+          return;
         }
+      }
+
+      try {
+        let data = await new makeApiCall().post("phonebook", values);
+
+        setPhoneBookList([...phonebooks, data.phonebook]);
+
+        setIsLoading(false);
+        setIsSubmitted(true);
+        setIsAdded(true);
+        toggle();
+        validation.resetForm();
+        setIsLoading(false);
+      } catch (err) {
+        handleError(err);
+        setIsLoading(false);
       }
     },
   });
@@ -238,25 +267,28 @@ const phonebookList = () => {
 
           <Row>
             <Col lg={12}>
-              <ul className="tab">
-                <li>
-                  <h3>Contacts</h3>
-                </li>
+              <div className="total__phonebooks">
+                <ul>
+                  <li>
+                    {/* <h3>Contacts</h3> */}
+                    <p>{totalPhonebooks} total phone books</p>
+                  </li>
 
-                <li>
-                  <div className="flex-grow-1">
-                    <button
-                      className="btn btn-info add-btn"
-                      onClick={() => {
-                        handleToggle();
-                      }}
-                    >
-                      <i className="ri-add-fill me-1 align-bottom"></i>
-                      Add contact
-                    </button>
-                  </div>
-                </li>
-              </ul>
+                  <li>
+                    <div className="flex-grow-1">
+                      <button
+                        className="btn btn-info add-btn"
+                        onClick={() => {
+                          handleToggle();
+                        }}
+                      >
+                        <i className="ri-add-fill me-1 align-bottom"></i>
+                        Add contact
+                      </button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </Col>
             <Col>
               <Card>
@@ -298,7 +330,7 @@ const phonebookList = () => {
                 ) : null}
 
                 <CardBody>
-                  {phonebooks.length
+                  {/* {phonebooks.length
                     ? phonebooks.map((p, i) => {
                         return (
                           <div key={i} className="phoneList">
@@ -336,8 +368,67 @@ const phonebookList = () => {
                           </div>
                         );
                       })
-                    : ""}
-                  {isLoading ? <div className="loader">please wait</div> : ""}
+                    : ""} */}
+
+                  {phonebooks && phonebooks.length ? (
+                    <InfiniteScroll
+                      dataLength={phonebooks && phonebooks.length}
+                      next={() => handleScroll(productState)}
+                      hasMore={true}
+                    >
+                      {phonebooks.length
+                        ? phonebooks.map((p, i) => {
+                            return (
+                              <div key={i} className="phoneList">
+                                <div className="phoneList__list">
+                                  <div className="phoneList__item">
+                                    <div className="phoneList__details">
+                                      <p className="phoneList__name">
+                                        {p.firstName} {p.lastName}
+                                      </p>
+
+                                      <div className="phoneList__phoneIcon">
+                                        <img src="/static/phone.png" alt="" />{" "}
+                                        <p> {p.phoneNumber}</p>
+                                      </div>
+                                    </div>
+                                    <div className="actions">
+                                      <ul>
+                                        <li>
+                                          <span onClick={() => handleEdit(p)}>
+                                            edit
+                                          </span>
+                                        </li>
+                                        <li>
+                                          <div
+                                            className="actions__img"
+                                            onClick={() => onClickDelete(p)}
+                                          >
+                                            <img
+                                              src="/static/delete.png"
+                                              alt=""
+                                            />
+                                          </div>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })
+                        : null}
+                    </InfiniteScroll>
+                  ) : null}
+
+                  {isLoading ? (
+                    <div className="lds-ripple">
+                      <div></div>
+                      <div></div>
+                    </div>
+                  ) : null}
+
+                  {/* {isLoading ? <div className="loader">please wait</div> : ""} */}
                   {!isLoading && !phonebooks.length ? "No data yet" : ""}
 
                   <Modal

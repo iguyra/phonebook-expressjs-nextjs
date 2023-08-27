@@ -13,7 +13,9 @@ class makeApiCall {
   }
 
   async get(urlPath, body) {
-    const { data } = await axios.get(`${APIbaseURL}/${urlPath}`, body);
+    let params = body;
+
+    const { data } = await axios.get(`${APIbaseURL}/${urlPath}`, { params });
     return data;
   }
 
