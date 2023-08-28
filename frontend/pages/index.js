@@ -255,125 +255,125 @@ const phonebookList = () => {
   return (
     <React.Fragment>
       <div className="container">
-        <Container>
-          <Row>
-            <Col md={5}>
-              <CardBody>
-                <div className="header__container">
-                  <div className="header">Phone book</div>
+        {/* <Container> */}
+        <Row>
+          <Col md={5}>
+            <CardBody>
+              <div className="header__container">
+                <div className="header">Phone book</div>
 
-                  <div className="total__phonebooks">
-                    {isLoading ? (
-                      <div className="ripple">
-                        <div></div>
-                        <div></div>
+                <div className="total__phonebooks">
+                  {isLoading ? (
+                    <div className="ripple">
+                      <div></div>
+                      <div></div>
+                    </div>
+                  ) : null}
+                  <ul>
+                    <li>
+                      <p>{totalPhonebooks} total phone books</p>
+                    </li>
+
+                    <li>
+                      <div className="flex-grow-1">
+                        <button
+                          className="btn btn-info add-btn"
+                          onClick={() => {
+                            handleToggle();
+                          }}
+                        >
+                          <i className="ri-add-fill me-1 align-bottom"></i>
+                          Add contact
+                        </button>
                       </div>
-                    ) : null}
-                    <ul>
-                      <li>
-                        <p>{totalPhonebooks} total phone books</p>
-                      </li>
-
-                      <li>
-                        <div className="flex-grow-1">
-                          <button
-                            className="btn btn-info add-btn"
-                            onClick={() => {
-                              handleToggle();
-                            }}
-                          >
-                            <i className="ri-add-fill me-1 align-bottom"></i>
-                            Add contact
-                          </button>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="search-box">
-                    <Input
-                      type="text"
-                      className="form-control search"
-                      placeholder="Search for contact by first, last or full name"
-                      onChange={handleSearch}
-                    />
-                    <i className="ri-search-line search-icon"></i>
-                  </div>
+                    </li>
+                  </ul>
                 </div>
-              </CardBody>
-            </Col>
-          </Row>
+                <div className="search-box">
+                  <Input
+                    type="text"
+                    className="form-control search"
+                    placeholder="Search for contact by first, last or full name"
+                    onChange={handleSearch}
+                  />
+                  <i className="ri-search-line search-icon"></i>
+                </div>
+              </div>
+            </CardBody>
+          </Col>
+        </Row>
 
-          <div className="phoneList__container">
-            <Row>
-              <Col>
-                {/* <Card> */}
-                <CardBody>
-                  {phonebooks && phonebooks.length ? (
-                    <InfiniteScroll
-                      dataLength={phonebooks && phonebooks.length}
-                      next={() => handleScroll(productState)}
-                      hasMore={true}
-                    >
-                      {phonebooks.length
-                        ? phonebooks.map((p, i) => {
-                            return (
-                              <div key={i} className="phoneList">
-                                <div className="phoneList__list">
-                                  <div className="phoneList__item">
-                                    <div className="phoneList__details">
-                                      <p className="phoneList__name">
-                                        {p.firstName} {p.lastName}
-                                      </p>
+        <div className="phoneList__container">
+          <Row>
+            <Col>
+              {/* <Card> */}
+              <CardBody>
+                {phonebooks && phonebooks.length ? (
+                  <InfiniteScroll
+                    dataLength={phonebooks && phonebooks.length}
+                    next={() => handleScroll(productState)}
+                    hasMore={true}
+                  >
+                    {phonebooks.length
+                      ? phonebooks.map((p, i) => {
+                          return (
+                            <div key={i} className="phoneList">
+                              <div className="phoneList__list">
+                                <div className="phoneList__item">
+                                  <div className="phoneList__details">
+                                    <p className="phoneList__name">
+                                      {p.firstName} {p.lastName}
+                                    </p>
 
-                                      <div className="phoneList__phoneIcon">
-                                        <img src="/static/phone.png" alt="" />{" "}
-                                        <p> {p.phoneNumber}</p>
-                                      </div>
+                                    <div className="phoneList__phoneIcon">
+                                      <img src="/static/phone.png" alt="" />{" "}
+                                      <p> {p.phoneNumber}</p>
                                     </div>
-                                    <div className="actions">
-                                      <ul>
-                                        <li>
-                                          <span onClick={() => handleEdit(p)}>
-                                            edit
-                                          </span>
-                                        </li>
-                                        <li>
-                                          <div
-                                            className="actions__img"
-                                            onClick={() => onClickDelete(p)}
-                                          >
-                                            <img
-                                              src="/static/delete.png"
-                                              alt=""
-                                            />
-                                          </div>
-                                        </li>
-                                      </ul>
-                                    </div>
+                                  </div>
+                                  <div className="actions">
+                                    <ul>
+                                      <li>
+                                        <span onClick={() => handleEdit(p)}>
+                                          edit
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <div
+                                          className="actions__img"
+                                          onClick={() => onClickDelete(p)}
+                                        >
+                                          <img
+                                            src="/static/delete.png"
+                                            alt=""
+                                          />
+                                        </div>
+                                      </li>
+                                    </ul>
                                   </div>
                                 </div>
                               </div>
-                            );
-                          })
-                        : null}
-                    </InfiniteScroll>
-                  ) : null}
+                            </div>
+                          );
+                        })
+                      : null}
+                  </InfiniteScroll>
+                ) : null}
 
-                  {!isLoading && !phonebooks.length ? "No data yet" : ""}
-                </CardBody>
-                {/* </Card> */}
-              </Col>
-            </Row>
-          </div>
+                {!isLoading && !phonebooks.length ? "No data yet" : ""}
+              </CardBody>
+              {/* </Card> */}
+            </Col>
+          </Row>
+        </div>
 
-          {errorMsg ? (
-            <MsgToastError
-              msg={errorMsg}
-              color="danger"
-              icon="ri-error-warning-line"
-            />
-          ) : null}
-        </Container>
+        {errorMsg ? (
+          <MsgToastError
+            msg={errorMsg}
+            color="danger"
+            icon="ri-error-warning-line"
+          />
+        ) : null}
+        {/* </Container> */}
       </div>
 
       <Modal id="showModal" size="lg" isOpen={modal} toggle={toggle} centered>
