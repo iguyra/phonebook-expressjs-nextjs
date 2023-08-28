@@ -186,6 +186,7 @@ const phonebookList = () => {
 
   const handleDelete = async (p) => {
     resetFlag();
+    setIsLoading(true);
 
     let data = await new makeApiCall().delete("phonebook", {
       data: {
