@@ -46,16 +46,14 @@
 
 
 .header__container{
-position: fixed;
+    position: fixed;
     width: 100%;
-    top: 0;
-    left: 0;
     background-color: rgb(255, 255, 255);
     z-index: 9999;
-    top: 0;
+    top: 10%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding-top: 20%;
+    // padding-top: 20%;
 
     @media only screen and (min-width: 768px) {
         width: 65%;
