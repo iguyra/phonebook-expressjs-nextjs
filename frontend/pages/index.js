@@ -255,82 +255,59 @@ const phonebookList = () => {
   return (
     <React.Fragment>
       <div className="container">
-        <DeleteModal
-          show={deleteModal}
-          onDeleteClick={handleDelete}
-          onCloseClick={() => setDeleteModal(false)}
-          isLoading={isLoading}
-        />
-
-        <Container fluid>
-          <div className="header">Phone book</div>
-
+        <Container>
           <Row>
-            <Col lg={12}>
-              <div className="total__phonebooks">
-                <ul>
-                  <li>
-                    {/* <h3>Contacts</h3> */}
-                    <p>{totalPhonebooks} total phone books</p>
-                  </li>
+            <Col md={5}>
+              <CardBody>
+                <div className="header__container">
+                  <div className="header">Phone book</div>
 
-                  <li>
-                    <div className="flex-grow-1">
-                      <button
-                        className="btn btn-info add-btn"
-                        onClick={() => {
-                          handleToggle();
-                        }}
-                      >
-                        <i className="ri-add-fill me-1 align-bottom"></i>
-                        Add contact
-                      </button>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </Col>
-            <Col>
-              <Card>
-                <CardHeader>
-                  <Row className="g-3">
-                    <Col md={5}>
-                      <div className="search-box">
-                        <Input
-                          type="text"
-                          className="form-control search"
-                          placeholder="Search for contact by first, last or full name"
-                          onChange={handleSearch}
-                        />
-                        <i className="ri-search-line search-icon"></i>
+                  <div className="total__phonebooks">
+                    {isLoading ? (
+                      <div className="ripple">
+                        <div></div>
+                        <div></div>
                       </div>
-                    </Col>
-                  </Row>
-                </CardHeader>
-                {isDeleted ? (
-                  <MsgToast
-                    msg={"contact deleted successfuly"}
-                    color="success"
-                    icon="ri-error-warning-line"
-                  />
-                ) : null}
-                {isAdded ? (
-                  <MsgToast
-                    msg={"contact added successfuly"}
-                    color="success"
-                    icon="ri-error-warning-line"
-                  />
-                ) : null}
-                {isUpdated ? (
-                  <MsgToast
-                    msg={"contact updated successfuly"}
-                    color="success"
-                    icon="ri-error-warning-line"
-                  />
-                ) : null}
+                    ) : null}
+                    <ul>
+                      <li>
+                        <p>{totalPhonebooks} total phone books</p>
+                      </li>
 
+                      <li>
+                        <div className="flex-grow-1">
+                          <button
+                            className="btn btn-info add-btn"
+                            onClick={() => {
+                              handleToggle();
+                            }}
+                          >
+                            <i className="ri-add-fill me-1 align-bottom"></i>
+                            Add contact
+                          </button>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="search-box">
+                    <Input
+                      type="text"
+                      className="form-control search"
+                      placeholder="Search for contact by first, last or full name"
+                      onChange={handleSearch}
+                    />
+                    <i className="ri-search-line search-icon"></i>
+                  </div>
+                </div>
+              </CardBody>
+            </Col>
+          </Row>
+
+          <div className="phoneList__container">
+            <Row>
+              <Col>
+                {/* <Card> */}
                 <CardBody>
-                  {/* <div className="phoneList__container"> */}
                   {phonebooks && phonebooks.length ? (
                     <InfiniteScroll
                       dataLength={phonebooks && phonebooks.length}
@@ -381,178 +358,13 @@ const phonebookList = () => {
                         : null}
                     </InfiniteScroll>
                   ) : null}
-                  {/* </div> */}
 
-                  {isLoading ? (
-                    <div className="lds-ripple">
-                      <div></div>
-                      <div></div>
-                    </div>
-                  ) : null}
-
-                  {/* {isLoading ? <div className="loader">please wait</div> : ""} */}
                   {!isLoading && !phonebooks.length ? "No data yet" : ""}
-
-                  <Modal
-                    id="showModal"
-                    size="lg"
-                    isOpen={modal}
-                    toggle={toggle}
-                    centered
-                  >
-                    <ModalHeader className="bg-soft-info p-3" toggle={toggle}>
-                      {isUpdate ? "Edit record" : "Add record"}
-                    </ModalHeader>
-
-                    <Form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
-                      }}
-                    >
-                      <ModalBody>
-                        <Input type="hidden" id="id-field" />
-                        <Row className="g-3">
-                          <Col lg={12}>
-                            <div>
-                              <Label
-                                htmlFor="name-field"
-                                className="form-label"
-                              >
-                                first name
-                              </Label>
-                              <Input
-                                name="firstName"
-                                id="name-field"
-                                className="form-control"
-                                placeholder="Enter first name"
-                                type="text"
-                                onChange={handleOnchange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.firstName || ""}
-                                invalid={
-                                  validation.touched.firstName &&
-                                  validation.errors.firstName
-                                    ? true
-                                    : false
-                                }
-                              />
-                              {validation.touched.firstName &&
-                              validation.errors.firstName ? (
-                                <FormFeedback type="invalid">
-                                  {validation.errors.firstName}
-                                </FormFeedback>
-                              ) : null}
-                            </div>
-                          </Col>
-
-                          <Col lg={12}>
-                            <div>
-                              <Label
-                                htmlFor="name-field"
-                                className="form-label"
-                              >
-                                last name
-                              </Label>
-                              <Input
-                                name="lastName"
-                                id="name-field"
-                                className="form-control"
-                                placeholder="Enter last name"
-                                type="text"
-                                onChange={handleOnchange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.lastName || ""}
-                                invalid={
-                                  validation.touched.lastName &&
-                                  validation.errors.lastName
-                                    ? true
-                                    : false
-                                }
-                              />
-                              {validation.touched.lastName &&
-                              validation.errors.lastName ? (
-                                <FormFeedback type="invalid">
-                                  {validation.errors.lastName}
-                                </FormFeedback>
-                              ) : null}
-                            </div>
-                          </Col>
-                          {/* phoneNumber */}
-                          <Col lg={12}>
-                            <div>
-                              <Label
-                                htmlFor="phoneNumber-field"
-                                className="form-label"
-                              >
-                                Phone number
-                              </Label>
-                              <Input
-                                name="phoneNumber"
-                                id="phoneNumber-field"
-                                className="form-control"
-                                placeholder="Enter phone number"
-                                type="text"
-                                rows="3"
-                                validate={{
-                                  required: { value: true },
-                                }}
-                                onChange={(e) => handleOnchange(e, "number")}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.phoneNumber || ""}
-                                invalid={
-                                  validation.touched.phoneNumber &&
-                                  validation.errors.phoneNumber
-                                    ? true
-                                    : false
-                                }
-                              />
-                              {validation.touched.phoneNumber &&
-                              validation.errors.phoneNumber ? (
-                                <FormFeedback type="invalid">
-                                  {validation.errors.phoneNumber}
-                                </FormFeedback>
-                              ) : null}
-                            </div>
-                          </Col>
-                        </Row>
-                      </ModalBody>
-                      <ModalFooter>
-                        <div className="hstack gap-2 justify-content-end">
-                          {!isUpdate ? (
-                            <button
-                              type="button"
-                              className="btn btn-light"
-                              onClick={() => {
-                                validation.resetForm();
-                              }}
-                            >
-                              Clear
-                            </button>
-                          ) : null}
-
-                          <button
-                            type="submit"
-                            className="btn btn-success"
-                            id="add-btn"
-                          >
-                            {isUpdate
-                              ? isLoading
-                                ? "please wait"
-                                : "Update"
-                              : isLoading
-                              ? "please wait"
-                              : "Add contact"}
-                          </button>
-                        </div>
-                      </ModalFooter>
-                    </Form>
-                  </Modal>
                 </CardBody>
-              </Card>
-            </Col>
-          </Row>
+                {/* </Card> */}
+              </Col>
+            </Row>
+          </div>
 
           {errorMsg ? (
             <MsgToastError
@@ -563,6 +375,169 @@ const phonebookList = () => {
           ) : null}
         </Container>
       </div>
+
+      <Modal id="showModal" size="lg" isOpen={modal} toggle={toggle} centered>
+        <ModalHeader className="bg-soft-info p-3" toggle={toggle}>
+          {isUpdate ? "Edit record" : "Add record"}
+        </ModalHeader>
+
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            validation.handleSubmit();
+            return false;
+          }}
+        >
+          <ModalBody>
+            <Input type="hidden" id="id-field" />
+            <Row className="g-3">
+              <Col lg={12}>
+                <div>
+                  <Label htmlFor="name-field" className="form-label">
+                    first name
+                  </Label>
+                  <Input
+                    name="firstName"
+                    id="name-field"
+                    className="form-control"
+                    placeholder="Enter first name"
+                    type="text"
+                    onChange={handleOnchange}
+                    onBlur={validation.handleBlur}
+                    value={validation.values.firstName || ""}
+                    invalid={
+                      validation.touched.firstName &&
+                      validation.errors.firstName
+                        ? true
+                        : false
+                    }
+                  />
+                  {validation.touched.firstName &&
+                  validation.errors.firstName ? (
+                    <FormFeedback type="invalid">
+                      {validation.errors.firstName}
+                    </FormFeedback>
+                  ) : null}
+                </div>
+              </Col>
+
+              <Col lg={12}>
+                <div>
+                  <Label htmlFor="name-field" className="form-label">
+                    last name
+                  </Label>
+                  <Input
+                    name="lastName"
+                    id="name-field"
+                    className="form-control"
+                    placeholder="Enter last name"
+                    type="text"
+                    onChange={handleOnchange}
+                    onBlur={validation.handleBlur}
+                    value={validation.values.lastName || ""}
+                    invalid={
+                      validation.touched.lastName && validation.errors.lastName
+                        ? true
+                        : false
+                    }
+                  />
+                  {validation.touched.lastName && validation.errors.lastName ? (
+                    <FormFeedback type="invalid">
+                      {validation.errors.lastName}
+                    </FormFeedback>
+                  ) : null}
+                </div>
+              </Col>
+              <Col lg={12}>
+                <div>
+                  <Label htmlFor="phoneNumber-field" className="form-label">
+                    Phone number
+                  </Label>
+                  <Input
+                    name="phoneNumber"
+                    id="phoneNumber-field"
+                    className="form-control"
+                    placeholder="Enter phone number"
+                    type="text"
+                    rows="3"
+                    validate={{
+                      required: { value: true },
+                    }}
+                    onChange={(e) => handleOnchange(e, "number")}
+                    onBlur={validation.handleBlur}
+                    value={validation.values.phoneNumber || ""}
+                    invalid={
+                      validation.touched.phoneNumber &&
+                      validation.errors.phoneNumber
+                        ? true
+                        : false
+                    }
+                  />
+                  {validation.touched.phoneNumber &&
+                  validation.errors.phoneNumber ? (
+                    <FormFeedback type="invalid">
+                      {validation.errors.phoneNumber}
+                    </FormFeedback>
+                  ) : null}
+                </div>
+              </Col>
+            </Row>
+          </ModalBody>
+          <ModalFooter>
+            <div className="hstack gap-2 justify-content-end">
+              {!isUpdate ? (
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  onClick={() => {
+                    validation.resetForm();
+                  }}
+                >
+                  Clear
+                </button>
+              ) : null}
+
+              <button type="submit" className="btn btn-success" id="add-btn">
+                {isUpdate
+                  ? isLoading
+                    ? "please wait"
+                    : "Update"
+                  : isLoading
+                  ? "please wait"
+                  : "Add contact"}
+              </button>
+            </div>
+          </ModalFooter>
+        </Form>
+      </Modal>
+
+      {isDeleted ? (
+        <MsgToast
+          msg={"contact deleted successfuly"}
+          color="success"
+          icon="ri-error-warning-line"
+        />
+      ) : null}
+      {isAdded ? (
+        <MsgToast
+          msg={"contact added successfuly"}
+          color="success"
+          icon="ri-error-warning-line"
+        />
+      ) : null}
+      {isUpdated ? (
+        <MsgToast
+          msg={"contact updated successfuly"}
+          color="success"
+          icon="ri-error-warning-line"
+        />
+      ) : null}
+      <DeleteModal
+        show={deleteModal}
+        onDeleteClick={handleDelete}
+        onCloseClick={() => setDeleteModal(false)}
+        isLoading={isLoading}
+      />
     </React.Fragment>
   );
 };
